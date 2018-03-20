@@ -1,8 +1,8 @@
 # Rails API Skeleton
 
-__Are you tired to configure new API again and again?__
+__Are you tired of configuring new APIs again and again?__
 
-Basic Rails API Skeleton will help you
+Basic Rails API Skeleton comes to your aid!
 
 ```sh
 $ bundle
