@@ -1,0 +1,150 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  Exclude:
+    - 'db/**/*'
+    - 'bin/*'
+    - 'spec/**/*.rb'
+    - 'config/environments/*.rb'
+
+# Commonly used screens these days easily fit more than 80 characters.
+Metrics/LineLength:
+  Max: 100
+
+# Too short methods lead to extraction of single-use methods, which can make
+# the code easier to read (by naming things), but can also clutter the class
+Metrics/MethodLength:
+  Max: 8
+
+# The guiding principle of classes is SRP, SRP can't be accurately measured by LoC
+Metrics/ClassLength:
+  Max: 120
+
+Rails/FilePath:
+  Enabled: false
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+# We do not need to support Ruby 1.9, so this is good to use.
+Style/SymbolArray:
+  Enabled: true
+
+# Most readable form.
+Layout/AlignHash:
+  EnforcedHashRocketStyle: table
+  EnforcedColonStyle: table
+
+# Mixing the styles looks just silly.
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+
+# String#% is by far the least verbose and only object oriented variant.
+Style/FormatString:
+  EnforcedStyle: percent
+
+Style/CollectionMethods:
+  Enabled: true
+
+Layout/AlignParameters:
+  Enabled: false
+
+# Either allow this style or don't. Marking it as safe with parenthesis
+# is silly. Let's try to live without them for now.
+Style/ParenthesesAroundCondition:
+  AllowSafeAssignment: false
+
+Lint/AssignmentInCondition:
+  AllowSafeAssignment: false
+
+# A specialized exception class will take one or more arguments and construct the message from it.
+# So both variants make sense.
+Style/RaiseArgs:
+  Enabled: false
+
+# Indenting the chained dots beneath each other is not supported by this cop,
+# see https://github.com/bbatsov/rubocop/issues/1633
+Layout/MultilineOperationIndentation:
+  Enabled: false
+
+# Fail is an alias of raise. Avoid aliases, it's more cognitive load for no gain.
+# The argument that fail should be used to abort the program is wrong too,
+# there's Kernel#abort for that.
+Style/SignalException:
+  EnforcedStyle: only_raise
+
+# Suppressing exceptions can be perfectly fine, and be it to avoid to
+# explicitly type nil into the rescue since that's what you want to return,
+# or suppressing LoadError for optional dependencies
+Lint/HandleExceptions:
+  Enabled: false
+
+Layout/SpaceInsideBlockBraces:
+  # The space here provides no real gain in readability while consuming
+  # horizontal space that could be used for a better parameter name.
+  # Also {| differentiates better from a hash than { | does.
+  SpaceBeforeBlockParameters: true
+
+# We should be able to write one-line hashes
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: false
+
+# do / end blocks should be used for side effects,
+# methods that run a block for side effects and have
+# a useful return value are rare, assign the return
+# value to a local variable for those cases.
+Style/MethodCalledOnDoEndBlock:
+  Enabled: true
+
+# Enforcing the names of variables? To single letter ones? Just no.
+Style/SingleLineBlockParams:
+  Enabled: false
+
+# Shadowing outer local variables with block parameters is often useful
+# to not reinvent a new name for the same thing, it highlights the relation
+# between the outer variable and the parameter. The cases where it's actually
+# confusing are rare, and usually bad for other reasons already, for example
+# because the method is too long.
+Lint/ShadowingOuterLocalVariable:
+  Enabled: false
+
+# Check with yard instead.
+Style/Documentation:
+  Enabled: false
+
+# There are valid cases, for example debugging Cucumber steps,
+# also they'll fail CI anyway
+Lint/Debugger:
+  Enabled: false
+
+# Style preference
+Style/MethodDefParentheses:
+  Enabled: false
+
+# Frozen Literals
+Style/FrozenStringLiteralComment:
+  EnforcedStyle: never
+
+# Quotes
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
+
+# Allow explicitly defined actions
+LexicallyScopedActionFilter:
+  Enabled: false
+
+# Allow 'render AND return'
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+# Allow us to use `alias_method` in class body
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+# Allow us to use empty `case`
+Style/EmptyCaseCondition:
+  Enabled: false
+
+# Allow space around operators
+Layout/SpaceAroundOperators:
+  Enabled: false
+
