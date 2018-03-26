@@ -1,0 +1,45 @@
+version: 2
+jobs:
+  build:
+    parallelism: 4
+    working_directory: ~/rails-api-skeleton
+    docker:
+      - image: circleci/ruby:2.5.0
+        environment:
+          RAILS_ENV: test
+      - image: circleci/mysql:5.7.17
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD=true
+
+    steps:
+      - checkout
+
+      # Which version of bundler?
+      - run:
+          name: Which bundler?
+          command: bundle -v
+
+      # Restore bundle cache
+      - restore_cache:
+          keys:
+            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+            - rails-demo-bundle-v2-
+
+      - run:
+          name: Bundle Install
+          command: bundle install
+
+      # Store bundle cache
+      - save_cache:
+          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Setting up application
+      - run:
+          type: shell
+          command: bin/setup
+
+      # Run rspec in parallel
+      - run:
+          command:  bundle exec rspec --format progress
