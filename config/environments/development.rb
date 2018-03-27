@@ -18,9 +18,10 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching       = false
   config.action_mailer.delivery_method       = :smtp
+  # Configuration for mailcatcher; use $mailcatcher to catch mails
   config.action_mailer.smtp_settings         = { address: 'localhost', port: 1025 }
 
   config.active_support.deprecation          = :log
