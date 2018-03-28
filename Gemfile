@@ -12,6 +12,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # === FEATURES ===
 gem 'draper'
+gem 'kaminari'
 gem 'pundit'
 
 # === API ===
