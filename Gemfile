@@ -11,6 +11,7 @@ gem 'rails',    '~> 5.1.5'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # === FEATURES ===
+gem 'pundit'
 
 # === API ===
 gem 'jbuilder'

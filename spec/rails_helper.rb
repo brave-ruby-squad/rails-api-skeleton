@@ -1,7 +1,8 @@
-require 'spec_helper'
+require 'pundit/rspec'
 require 'shoulda/matchers'
-require 'webmock/rspec'
 require 'simplecov'
+require 'spec_helper'
+require 'webmock/rspec'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)
