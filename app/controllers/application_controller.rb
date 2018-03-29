@@ -6,7 +6,14 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound,       with: :not_found!
   rescue_from ActionController::ParameterMissing, with: :params_required!
 
-  after_action :verify_authorized
+  before_action :authenticate_user
+  after_action  :verify_authorized
 
-  def current_user; end
+  attr_reader :current_user
+
+  private
+
+  def authenticate_user
+    @current_user = Padlock::Verifier.call(request.headers)
+  end
 end
