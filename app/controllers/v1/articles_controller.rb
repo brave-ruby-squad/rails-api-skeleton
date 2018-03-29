@@ -1,5 +1,7 @@
 module V1
   class ArticlesController < ApplicationController
+    decorates_assigned :articles
+
     def index
       authorize Article
 
