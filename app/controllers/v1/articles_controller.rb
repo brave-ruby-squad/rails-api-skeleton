@@ -5,7 +5,9 @@ module V1
     def index
       authorize Article
 
-      @articles = Article.all
+      @articles = Article
+        .page(params[:page])
+        .per(params[:per_page])
     end
   end
 end
