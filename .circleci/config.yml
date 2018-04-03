@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build:
-    parallelism: 4
     working_directory: ~/rails-api-skeleton
     docker:
       - image: circleci/ruby:2.5.0
@@ -9,37 +8,51 @@ jobs:
           RAILS_ENV: test
       - image: circleci/mysql:5.7.17
         environment:
-          - MYSQL_ALLOW_EMPTY_PASSWORD=true
+          MYSQL_ALLOW_EMPTY_PASSWORD: true
 
     steps:
       - checkout
 
-      # Which version of bundler?
-      - run:
-          name: Which bundler?
-          command: bundle -v
-
       # Restore bundle cache
       - restore_cache:
           keys:
-            - rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-            - rails-demo-bundle-v2-
-
-      - run:
-          name: Bundle Install
-          command: bundle install
-
-      # Store bundle cache
-      - save_cache:
-          key: rails-demo-bundle-v2-{{ checksum "Gemfile.lock" }}
-          paths:
-            - vendor/bundle
+            - v1-dependencies-{{ checksum "Gemfile.lock" }}
+            - v1-dependencies-
 
       # Setting up application
       - run:
-          type: shell
+          name: Setup application
           command: bin/setup
 
-      # Run rspec in parallel
+      # Store bundle cache
+      - save_cache:
+          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
+          paths:
+            - vendor/bundle
+
+      # Run Brakeman
       - run:
-          command:  bundle exec rspec --format progress
+          name: Brakeman
+          command: bundle exec brakeman --no-progress --separate-models --exit-on-warn
+
+      # Run Rubocop
+      - run:
+          name: Rubocop
+          command: bundle exec rubocop
+
+      # Run RSpec in parallel
+      - run:
+          name: Run Tests
+          command: |
+            mkdir /tmp/test-results
+            TEST_FILES="$(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings)"
+
+            bundle exec rspec
+
+      # Circle CI Reports
+      - store_test_results:
+          path: /tmp/test-results
+
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: test-results

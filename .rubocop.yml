@@ -5,6 +5,7 @@ AllCops:
     - 'bin/*'
     - 'spec/**/*.rb'
     - 'config/environments/*.rb'
+    - 'vendor/bundle/**/*'
 
 # Commonly used screens these days easily fit more than 80 characters.
 Metrics/LineLength:
@@ -65,6 +66,11 @@ Style/RaiseArgs:
 # see https://github.com/bbatsov/rubocop/issues/1633
 Layout/MultilineOperationIndentation:
   Enabled: false
+
+# This cop checks the indentation of the method name part
+# in method calls that span more than one line.
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 # Fail is an alias of raise. Avoid aliases, it's more cognitive load for no gain.
 # The argument that fail should be used to abort the program is wrong too,
