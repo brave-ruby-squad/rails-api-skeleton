@@ -3,20 +3,20 @@
 default: &default
   adapter:  mysql2
   encoding: utf8
-  host:     <%= ENV['DB_HOST'] || '127.0.0.1' %>
-  port:     <%= ENV['DB_PORT'] || 3306 %>
-  username: <%= ENV['DB_USERNAME'] || 'root' %>
+  host:     <%= ENV.fetch('DB_HOST', '127.0.0.1') %>
+  port:     <%= ENV.fetch('DB_PORT', 3306) %>
+  pool:     <%= ENV.fetch('RAILS_MAX_THREADS', 5) %>
+  username: <%= ENV.fetch('DB_USERNAME', 'root') %>
   password: <%= ENV['DB_PASSWORD'] %>
-  pool:     <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
   <<: *default
-  database: development
+  database: <%= ENV.fetch('DB_NAME') { ENV.fetch('APP_NAME', 'application').dup.concat('_development') } %>
 
 test:
   <<: *default
-  database: test
+  database: <%= ENV.fetch('DB_NAME') { ENV.fetch('APP_NAME', 'application').dup.concat('_test') } %>
 
 production:
   <<: *default
-  database: production
+  database: <%= ENV.fetch('DB_NAME') { ENV.fetch('APP_NAME', 'application').dup.concat('_production') } %>

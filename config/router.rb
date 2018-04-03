@@ -1,5 +1,5 @@
 module Router
-  ROUTES_PATH = 'config/routes/**/*.rb'
+  ROUTES_PATH = 'config/routes/**/*.rb'.freeze
 
   def specify(route_name)
     extend(route_module(route_name))
