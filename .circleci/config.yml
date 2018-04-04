@@ -1,6 +1,7 @@
 version: 2
 jobs:
   build:
+    parallelism: 4
     working_directory: ~/rails-api-skeleton
     docker:
       - image: circleci/ruby:2.5.0
@@ -8,10 +9,15 @@ jobs:
           RAILS_ENV: test
       - image: circleci/mysql:5.7.17
         environment:
+          MYSQL_ROOT_HOST: '%'
           MYSQL_ALLOW_EMPTY_PASSWORD: true
 
     steps:
       - checkout
+
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
 
       # Restore bundle cache
       - restore_cache:
