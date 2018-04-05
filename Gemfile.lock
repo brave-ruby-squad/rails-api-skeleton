@@ -47,6 +47,7 @@ GEM
     arel (8.0.0)
     ast (2.4.0)
     awesome_print (1.8.0)
+    bcrypt (3.1.11)
     bootsnap (1.2.1)
       msgpack (~> 1.0)
     brakeman (4.2.1)
@@ -87,6 +88,7 @@ GEM
       activesupport (>= 4.2.0)
       multi_json (>= 1.2)
     json (2.1.0)
+    jwt (2.1.0)
     kaminari (1.1.1)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.1.1)
@@ -228,6 +230,7 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
+  bcrypt
   bootsnap (>= 1.1.0)
   brakeman
   database_cleaner
@@ -236,6 +239,7 @@ DEPENDENCIES
   factory_bot_rails (~> 4.0)
   faker (~> 1.8.7)
   jbuilder
+  jwt
   kaminari
   listen (>= 3.0.5, < 3.2)
   mysql2 (>= 0.3.18, < 0.5)

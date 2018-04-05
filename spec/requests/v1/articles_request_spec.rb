@@ -6,4 +6,4 @@ describe V1::ArticlesController, type: :request do
 
     it { expect(response).to be_success }
   end
-end
+ end
