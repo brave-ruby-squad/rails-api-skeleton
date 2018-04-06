@@ -10,7 +10,9 @@ module V1
         end
 
         def call
-          user.persisted? ? token.user : user
+          create_token if user.persisted?
+
+          user
         end
 
         private
@@ -33,8 +35,8 @@ module V1
           return { uid: phone, provider: :phone } if phone
         end
 
-        def token
-          @token ||= user.tokens.create(
+        def create_token
+          user.tokens.create(
             key:        SecureRandom.base64(18),
             key_type:   :auth,
             expired_at: Time.zone.now + 1.month
