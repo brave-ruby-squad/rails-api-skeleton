@@ -1,9 +1,9 @@
 module Routes
   module V1
     module Padlock
-      module Sessions
+      module Session
         def call
-          resources :sessions, only: %i[create destroy]
+          resource :session, only: %i[create destroy], controller: :session
         end
       end
     end

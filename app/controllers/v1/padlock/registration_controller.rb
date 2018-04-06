@@ -1,6 +1,6 @@
 module V1
   module Padlock
-    class RegistrationsController < V1::Padlock::PadlockController
+    class RegistrationController < V1::Padlock::PadlockController
       def create
         @user = V1::Padlock::Registrations::Create.call(user_params)
 

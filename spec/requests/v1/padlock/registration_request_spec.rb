@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe V1::Padlock::RegistrationsController, type: :request do
+describe V1::Padlock::RegistrationController, type: :request do
   describe '#create' do
-    let(:request) { post registrations_path, params: params }
+    let(:request) { post registration_path, params: params }
     let(:params)  { { user: user_params } }
 
     context 'with email' do

@@ -22,10 +22,10 @@ module Router
   private
 
   def route_module(route_name)
-    "Routes::#{resource(route_name)}".constantize
+    "Routes::#{route_resource(route_name)}".constantize
   end
 
-  def resource(route_name)
+  def route_resource(route_name)
     [@scope.namespace, route_name.to_s.camelize]
       .reject(&:blank?)
       .join('::')

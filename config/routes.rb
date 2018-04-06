@@ -3,8 +3,8 @@ Rails.application.routes.draw do
     specify :users
     specify :articles
     scope module: :padlock do
-      specify :registrations
-      specify :sessions
+      specify :registration
+      specify :session
     end
   end
 

@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe V1::Padlock::SessionsController, type: :request do
+describe V1::Padlock::SessionController, type: :request do
   describe '#create' do
-    let(:request) { post sessions_path, params: params }
+    let(:request) { post session_path, params: params }
 
     context 'email' do
       let!(:user)  { create(:user, :email) }
@@ -108,4 +108,29 @@ describe V1::Padlock::SessionsController, type: :request do
       end
     end
   end
+
+  # describe '#destroy' do
+  #   let(:request) { delete session_path, headers: headers }
+  #   let(:user)    { create(:user, :email, :token) }
+
+  #   let(:headers) { { 'X-Access-Token' => user.tokens.last.key} }
+
+  #   context 'response' do
+  #     before { request }
+
+  #     include_examples 'success status'
+  #     include_examples 'no access token'
+  #   end
+
+  #   context 'behavior' do
+  #     it 'destroys token' do
+  #       expect{ request }.to change(Token, :count).by(-1)
+  #     end
+  #   end
+
+  #   context 'with invalid token' do
+  #     include_examples 'unprocessable entity status'
+  #     include_examples 'no access token'
+  #   end
+  # end
 end

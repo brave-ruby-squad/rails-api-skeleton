@@ -1,6 +1,6 @@
 module V1
   module Padlock
-    class SessionsController < V1::Padlock::PadlockController
+    class SessionController < V1::Padlock::PadlockController
       def create
         @user  = V1::Padlock::Sessions::Create.call(params)
 
