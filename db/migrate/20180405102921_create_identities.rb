@@ -8,5 +8,7 @@ class CreateIdentities < ActiveRecord::Migration[5.1]
 
       t.timestamps
     end
+
+    add_index :identities, :uid
   end
 end

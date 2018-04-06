@@ -6,4 +6,6 @@ class User < ApplicationRecord
 
   validates :password, confirmation: true, length: 6..20
   validates :password_confirmation, presence: true
+
+  accepts_nested_attributes_for :identities
 end
