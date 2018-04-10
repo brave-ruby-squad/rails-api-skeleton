@@ -1,25 +1,27 @@
 module V1
   module Padlock
     class PadlockController < ApplicationController
+      ACCESS_TOKEN_KEY = 'X-Access-Token'.freeze
+
+      after_action :insert_token
+
       skip_after_action :verify_authorized
 
-      # skip_before_action :authenticate_user
+      private
 
-      # after_action :insert_token
+      attr_reader :user
 
-      # private
+      def user_valid?
+        user&.persisted?
+      end
 
-      # def insert_token
-      #   response.headers['X-Access-Token'] = token
-      # end
+      def insert_token
+        response.headers[ACCESS_TOKEN_KEY] = user.tokens.last.key if user_valid?
+      end
 
-      # def token
-      #   @token ||= ::Padlock::Authenticator.call(sanitized_params)
-      # end
-
-      # def sanitized_params
-      #   params.require(:user).permit(:name, :email, :password, :password_confirmation)
-      # end
+      def token
+        @token ||= Token.find_by(key: request.headers[ACCESS_TOKEN_KEY])
+      end
     end
   end
 end

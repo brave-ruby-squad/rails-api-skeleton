@@ -109,28 +109,32 @@ describe V1::Padlock::SessionController, type: :request do
     end
   end
 
-  # describe '#destroy' do
-  #   let(:request) { delete session_path, headers: headers }
-  #   let(:user)    { create(:user, :email, :token) }
+  describe '#destroy' do
+    let(:request) { delete session_path, headers: headers }
+    let!(:user)   { create(:user, :email, :token) }
 
-  #   let(:headers) { { 'X-Access-Token' => user.tokens.last.key} }
+    let(:headers) { { 'X-Access-Token' => user.tokens.last.key} }
 
-  #   context 'response' do
-  #     before { request }
+    context 'response' do
+      before { request }
 
-  #     include_examples 'success status'
-  #     include_examples 'no access token'
-  #   end
+      include_examples 'success status'
+      include_examples 'no access token'
+    end
 
-  #   context 'behavior' do
-  #     it 'destroys token' do
-  #       expect{ request }.to change(Token, :count).by(-1)
-  #     end
-  #   end
+    context 'behavior' do
+      it 'destroys token' do
+        expect{ request }.to change(Token, :count).by(-1)
+      end
+    end
 
-  #   context 'with invalid token' do
-  #     include_examples 'unprocessable entity status'
-  #     include_examples 'no access token'
-  #   end
-  # end
+    context 'with invalid token' do
+      before { request }
+
+      let(:headers) { { 'X-Access-Token' => Faker::Bitcoin.address } }
+
+      include_examples 'unprocessable entity status'
+      include_examples 'no access token'
+    end
+  end
 end

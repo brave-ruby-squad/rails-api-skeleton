@@ -10,7 +10,7 @@ module V1
         end
 
         def call
-          create_token if user.persisted?
+          generate_token if user.persisted?
 
           user
         end
@@ -35,12 +35,8 @@ module V1
           return { uid: phone, provider: :phone } if phone
         end
 
-        def create_token
-          user.tokens.create(
-            key:        SecureRandom.base64(18),
-            key_type:   :auth,
-            expired_at: Time.zone.now + 1.month
-          )
+        def generate_token
+          ::Padlock::TokenGenerator.call(user: user)
         end
       end
     end

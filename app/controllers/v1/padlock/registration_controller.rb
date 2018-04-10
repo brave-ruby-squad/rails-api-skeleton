@@ -6,7 +6,6 @@ module V1
 
         return render json: @user.errors, status: :unprocessable_entity unless @user.persisted?
 
-        response.headers['X-Access-Token'] = @user.tokens.last.key
         render '/v1/users/show', status: :created
       end
 

@@ -11,7 +11,7 @@ module V1
         def call
           return unless identity && user.authenticate(password)
 
-          create_token
+          generate_token
 
           user
         end
@@ -33,12 +33,8 @@ module V1
           @user ||= User.find_by(id: identity.user_id)
         end
 
-        def create_token
-          user.tokens.create(
-            key:        SecureRandom.base64(18),
-            key_type:   :auth,
-            expired_at: Time.zone.now + 1.month
-          )
+        def generate_token
+          ::Padlock::TokenGenerator.call(user: user)
         end
       end
     end
