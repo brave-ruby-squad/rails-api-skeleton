@@ -1,2 +1,8 @@
 en:
   hello: "Hello world"
+
+  errors:
+    commands:
+      articles:
+        index:
+          lel: ''

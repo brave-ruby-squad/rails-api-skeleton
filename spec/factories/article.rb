@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :article do
-    title Faker::Lorem.paragraph
-    body  Faker::Lorem.sentences
+    title Faker::Superhero.name
+    body  Faker::Lorem.paragraph
   end
 end
