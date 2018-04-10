@@ -3,6 +3,8 @@ require 'rails_helper'
 describe V1::Padlock::Registrations::Create do
   subject { described_class.call(params) }
 
+  before { allow_any_instance_of(ExpireTokenJob).to receive(:perform_now).and_return(true) }
+
   let(:params) { user_params }
 
   context 'with email' do

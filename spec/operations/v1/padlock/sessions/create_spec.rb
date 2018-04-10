@@ -3,6 +3,8 @@ require 'rails_helper'
 describe V1::Padlock::Sessions::Create do
   subject { described_class.call(params) }
 
+  before { allow_any_instance_of(ExpireTokenJob).to receive(:perform_now).and_return(true) }
+
   context 'email' do
     let!(:user)  { create(:user, :email) }
     let(:params) { { email: user.identities.first.uid, password: user.password} }

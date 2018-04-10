@@ -21,12 +21,11 @@ module V1
         attr_reader :password, :email, :phone
 
         def identity
-          @identity ||= case
-                        when email
-                          Identity.find_by(uid: email)
-                        when phone
-                          Identity.find_by(uid: phone)
-                        end
+          @identity ||= Identity.find_by(uid: uid)
+        end
+
+        def uid
+          email || phone
         end
 
         def user
