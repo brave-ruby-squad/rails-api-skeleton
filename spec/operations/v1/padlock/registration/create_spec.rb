@@ -1,11 +1,11 @@
 require 'rails_helper'
 
-describe V1::Padlock::Registrations::Create do
+describe V1::Padlock::Registration::Create do
   subject { described_class.call(params) }
 
-  before { Sidekiq::Testing.fake! }
-
   let(:params) { user_params }
+
+  before { Sidekiq::Testing.fake! }
 
   context 'with email' do
     let(:user_params) { build(:user_params, :email) }
@@ -16,10 +16,6 @@ describe V1::Padlock::Registrations::Create do
 
     it 'creates new identity' do
       expect{ subject }.to change(Identity, :count).by(1)
-    end
-
-    it 'creates new token' do
-      expect{ subject }.to change(Token, :count).by(1)
     end
 
     it 'returns created user' do
@@ -34,23 +30,15 @@ describe V1::Padlock::Registrations::Create do
       expect(subject.identities.first.provider).to eq('email')
     end
 
-    it 'creates new user token' do
-      expect(subject.tokens.first.key).not_to be_nil
-    end
-
     context 'without email' do
       let(:params) { user_params.merge(email: '') }
 
-      it 'creates new user' do
+      it 'creates no user' do
         expect{ subject }.not_to change(User, :count)
       end
 
-      it 'creates new identity' do
+      it 'creates no identity' do
         expect{ subject }.not_to change(Identity, :count)
-      end
-
-      it 'creates new token' do
-        expect{ subject }.not_to change(Token, :count)
       end
 
       it 'returns unsaved user' do
@@ -61,7 +49,27 @@ describe V1::Padlock::Registrations::Create do
       it 'returns user errors' do
         expect(subject.errors).to include('identities.uid')
       end
+    end
 
+    context "with provider mismatch" do
+      let(:params) { user_params.merge(email: '') }
+
+      it 'creates no user' do
+        expect{ subject }.not_to change(User, :count)
+      end
+
+      it 'creates no identity' do
+        expect{ subject }.not_to change(Identity, :count)
+      end
+
+      it 'returns unsaved user' do
+        expect(subject).to be_a User
+        expect(subject).not_to be_persisted
+      end
+
+      it 'returns user errors' do
+        expect(subject.errors).to include('identities.uid')
+      end
     end
   end
 
@@ -76,10 +84,6 @@ describe V1::Padlock::Registrations::Create do
       expect{ subject }.to change(Identity, :count).by(1)
     end
 
-    it 'creates new token' do
-      expect{ subject }.to change(Token, :count).by(1)
-    end
-
     it 'returns created user' do
       expect(subject).to be_a User
     end
@@ -92,23 +96,36 @@ describe V1::Padlock::Registrations::Create do
       expect(subject.identities.first.provider).to eq('phone')
     end
 
-    it 'creates new user token' do
-      expect(subject.tokens.first.key).not_to be_nil
-    end
-
     context 'without phone number' do
       let(:params) { user_params.merge(phone: '') }
 
-      it 'creates new user' do
+      it 'creates no user' do
         expect{ subject }.not_to change(User, :count)
       end
 
-      it 'creates new identity' do
+      it 'creates no identity' do
         expect{ subject }.not_to change(Identity, :count)
       end
 
-      it 'creates new token' do
-        expect{ subject }.not_to change(Token, :count)
+      it 'returns unsaved user' do
+        expect(subject).to be_a User
+        expect(subject).not_to be_persisted
+      end
+
+      it 'returns user errors' do
+        expect(subject.errors).to include('identities.uid')
+      end
+    end
+
+    context "with provider mismatch" do
+      let(:params) { user_params.merge(email: '') }
+
+      it 'creates no user' do
+        expect{ subject }.not_to change(User, :count)
+      end
+
+      it 'creates no identity' do
+        expect{ subject }.not_to change(Identity, :count)
       end
 
       it 'returns unsaved user' do
@@ -132,12 +149,8 @@ describe V1::Padlock::Registrations::Create do
         expect{ subject }.not_to change(User, :count)
       end
 
-      it 'creates new identity' do
+      it 'creates no identity' do
         expect{ subject }.not_to change(Identity, :count)
-      end
-
-      it 'creates new token' do
-        expect{ subject }.not_to change(Token, :count)
       end
 
       it 'returns unsaved user' do
@@ -160,10 +173,6 @@ describe V1::Padlock::Registrations::Create do
         expect{ subject }.not_to change(Identity, :count)
       end
 
-      it 'creates new token' do
-        expect{ subject }.not_to change(Token, :count)
-      end
-
       it 'returns unsaved user' do
         expect(subject).not_to be_persisted
       end
@@ -182,10 +191,6 @@ describe V1::Padlock::Registrations::Create do
 
       it 'creates new identity' do
         expect{ subject }.not_to change(Identity, :count)
-      end
-
-      it 'creates new token' do
-        expect{ subject }.not_to change(Token, :count)
       end
 
       it 'returns unsaved user' do

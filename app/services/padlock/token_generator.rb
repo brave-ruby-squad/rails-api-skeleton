@@ -1,9 +1,8 @@
 module Padlock
   class TokenGenerator < Padlock::Base
     def initialize(params = {})
-      @user       = params[:user]
-      @type       = params.fetch(:type, :auth)
-      @expired_at = params.fetch(:expired_at, Time.zone.now + 1.month)
+      @user_id  = params[:user_id]
+      @key_type = params.fetch(:key_type, :auth)
     end
 
     def call
@@ -14,12 +13,29 @@ module Padlock
 
     private
 
-    attr_reader :user, :type, :expired_at
+    attr_reader :user_id, :key_type
+
+    def user
+      @user ||= User.find_by(id: user_id)
+    end
+
+    def key
+      @key ||= SecureRandom.urlsafe_base64(AUTH_TOKEN_LENGTH)
+    end
+
+    def expired_at
+      @expired_at ||= case key_type
+                      when :auth
+                        Time.zone.now + 1.month
+                      when :verification
+                        Time.zone.now + 1.hour
+                      end
+    end
 
     def token
       @token ||= user.tokens.create(
-        key:        SecureRandom.base64(TOKEL_LENGTH),
-        key_type:   type,
+        key_type:   key_type,
+        key:        key,
         expired_at: expired_at
       )
     end

@@ -1,2 +1,13 @@
 en:
   hello: "Hello world"
+
+  padlock:
+    mailers:
+      verification_mailer:
+        verify_email: Verify your email address
+
+    emails:
+      verification_email:
+        instruction: Click on the link below to verify your email address.
+        link_name: Verify my email
+        warning: If you did not request your email address to be verified, ignore this email.

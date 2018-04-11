@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe V1::Padlock::Sessions::Create do
+describe V1::Padlock::Session::Create do
   subject { described_class.call(params) }
 
   before { Sidekiq::Testing.fake! }
@@ -17,19 +17,11 @@ describe V1::Padlock::Sessions::Create do
       expect(subject).to be_a User
     end
 
-    it 'creates new token' do
-      expect{ subject }.to change(Token, :count).by(1)
-    end
-
     context 'when proper credentials are not provided' do
       let(:params) { { email: user.identities.first.uid, password: SecureRandom.base64(8) } }
 
       it 'returns nil' do
         expect(subject).to be_nil
-      end
-
-      it "doesn't create new token" do
-        expect{ subject }.not_to change(Token, :count)
       end
     end
   end
@@ -46,19 +38,11 @@ describe V1::Padlock::Sessions::Create do
       expect(subject).to be_a User
     end
 
-    it 'creates new token' do
-      expect{ subject }.to change(Token, :count).by(1)
-    end
-
     context 'when proper credentials are not provided' do
       let(:params) { { phone: user.identities.first.uid, password: SecureRandom.base64(8)} }
 
       it 'returns nil' do
         expect(subject).to be_nil
-      end
-
-      it "doesn't create new token" do
-        expect{ subject }.not_to change(Token, :count)
       end
     end
   end
@@ -68,10 +52,6 @@ describe V1::Padlock::Sessions::Create do
 
     it 'returns nil' do
       expect(subject).to be_nil
-    end
-
-    it "doesn't create new token" do
-      expect{ subject }.not_to change(Token, :count)
     end
   end
 end

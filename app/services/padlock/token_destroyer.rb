@@ -5,7 +5,7 @@ module Padlock
     end
 
     def call
-      token.delete
+      token.destroy
     end
 
     private

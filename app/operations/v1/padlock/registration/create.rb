@@ -1,6 +1,6 @@
 module V1
   module Padlock
-    module Registrations
+    module Registration
       class Create < ::Callable
         def initialize(params = {})
           @email                 = params[:email]
@@ -10,33 +10,24 @@ module V1
         end
 
         def call
-          generate_token if user.persisted?
-
-          user
+          User.create(
+            password:              password,
+            password_confirmation: password_confirmation,
+            identities_attributes: identities_attributes
+          )
         end
 
         private
 
         attr_reader :email, :phone, :password, :password_confirmation
 
-        def user
-          @user ||= User.create(
-            password:              password,
-            password_confirmation: password_confirmation,
-            identities_attributes: [
-              identity_attributes
-            ]
-          )
+        def identities_attributes
+          Array[identity_attributes].compact
         end
 
         def identity_attributes
           return { uid: email, provider: :email } if email
-
           return { uid: phone, provider: :phone } if phone
-        end
-
-        def generate_token
-          ::Padlock::TokenGenerator.call(user: user)
         end
       end
     end

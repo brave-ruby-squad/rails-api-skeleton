@@ -7,20 +7,25 @@ module V1
 
       skip_after_action :verify_authorized
 
-      private
+      protected
 
-      attr_reader :user
-
-      def user_valid?
-        user&.persisted?
+      def user_persisted?
+        user.present? && user.persisted?
       end
 
       def insert_token
-        response.headers[ACCESS_TOKEN_KEY] = user.tokens.last.key if user_valid?
+        return unless user_persisted?
+
+        response.headers[ACCESS_TOKEN_KEY] =
+          token || ::Padlock::TokenGenerator.call(user_id: user.id).key
       end
 
       def token
         @token ||= Token.find_by(key: request.headers[ACCESS_TOKEN_KEY])
+      end
+
+      def user
+        @user ||= ::Padlock::UserByToken.call(token: token)
       end
     end
   end

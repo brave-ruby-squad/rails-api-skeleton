@@ -2,17 +2,17 @@ module V1
   module Padlock
     class SessionController < V1::Padlock::PadlockController
       def create
-        @user = V1::Padlock::Sessions::Create.call(params)
+        @user = V1::Padlock::Session::Create.call(params)
 
-        return head :unauthorized unless @user
+        return head :unauthorized unless user_persisted?
 
-        render '/v1/users/show', status: :ok
+        render '/v1/users/show'
       end
 
       def destroy
-        return head :unprocessable_entity unless token
+        ::Padlock::TokenDestroyer.call(token: token) if token
 
-        return head :ok if ::Padlock::TokenDestroyer.call(token: token)
+        head :no_content
       end
     end
   end

@@ -2,9 +2,9 @@ require 'rails_helper'
 
 describe V1::Padlock::SessionController, type: :request do
   describe '#create' do
-    before { allow_any_instance_of(ExpireTokenJob).to receive(:perform).and_return(true) }
-
     let(:request) { post session_path, params: params }
+
+    before { allow_any_instance_of(ExpireTokenJob).to receive(:perform).and_return(true) }
 
     context 'email' do
       let!(:user)  { create(:user, :email) }
@@ -114,13 +114,15 @@ describe V1::Padlock::SessionController, type: :request do
   describe '#destroy' do
     let(:request) { delete session_path, headers: headers }
     let!(:user)   { create(:user, :email, :token) }
-
     let(:headers) { { 'X-Access-Token' => user.tokens.last.key} }
 
     context 'response' do
       before { request }
 
-      include_examples 'success status'
+      it "returns 'no content' status" do
+        expect(response).to have_http_status :no_content
+      end
+
       include_examples 'no access token'
     end
 
@@ -131,11 +133,14 @@ describe V1::Padlock::SessionController, type: :request do
     end
 
     context 'with invalid token' do
-      before { request }
-
       let(:headers) { { 'X-Access-Token' => Faker::Bitcoin.address } }
 
-      include_examples 'unprocessable entity status'
+      before { request }
+
+      it "returns 'no content' status" do
+        expect(response).to have_http_status :no_content
+      end
+
       include_examples 'no access token'
     end
   end

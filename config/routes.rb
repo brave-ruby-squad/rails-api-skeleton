@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     scope module: :padlock do
       specify :registration
       specify :session
+      specify :verification
     end
   end
 

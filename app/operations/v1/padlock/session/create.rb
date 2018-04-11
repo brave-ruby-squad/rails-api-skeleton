@@ -1,6 +1,6 @@
 module V1
   module Padlock
-    module Sessions
+    module Session
       class Create < ::Callable
         def initialize(params = {})
           @password = params[:password]
@@ -10,8 +10,6 @@ module V1
 
         def call
           return unless identity && user.authenticate(password)
-
-          generate_token
 
           user
         end
@@ -30,10 +28,6 @@ module V1
 
         def user
           @user ||= User.find_by(id: identity.user_id)
-        end
-
-        def generate_token
-          ::Padlock::TokenGenerator.call(user: user)
         end
       end
     end

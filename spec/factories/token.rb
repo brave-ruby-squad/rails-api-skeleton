@@ -5,5 +5,9 @@ FactoryBot.define do
     expired_at { Faker::Date.forward(30) }
 
     user
+
+    trait :verification do
+      key_type :verification
+    end
   end
 end
