@@ -3,8 +3,6 @@ require 'rails_helper'
 describe Padlock::TokenGenerator do
   subject { described_class.call(user: user) }
 
-  before { allow_any_instance_of(ExpireTokenJob).to receive(:perform_now).and_return(true) }
-
   let(:user) { create(:user) }
 
   it 'creates new token for a user' do
@@ -12,9 +10,7 @@ describe Padlock::TokenGenerator do
   end
 
   it 'creates delayed job' do
-    expect_any_instance_of(ExpireTokenJob).to receive(:perform_now).and_return(true)
-
-    subject
+    expect{ subject }.to change(ExpireTokenJob.jobs, :size).by(1)
   end
 
   describe 'token' do

@@ -3,6 +3,7 @@ require 'shoulda/matchers'
 require 'simplecov'
 require 'spec_helper'
 require 'webmock/rspec'
+require 'sidekiq/testing'
 
 ENV['RAILS_ENV'] ||= 'test'
 require File.expand_path('../../config/environment', __FILE__)

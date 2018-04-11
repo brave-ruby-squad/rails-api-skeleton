@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe V1::Padlock::SessionController, type: :request do
   describe '#create' do
-    before { allow_any_instance_of(ExpireTokenJob).to receive(:perform_now).and_return(true) }
+    before { allow_any_instance_of(ExpireTokenJob).to receive(:perform).and_return(true) }
 
     let(:request) { post session_path, params: params }
 

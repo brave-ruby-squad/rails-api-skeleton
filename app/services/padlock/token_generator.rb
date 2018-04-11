@@ -7,7 +7,7 @@ module Padlock
     end
 
     def call
-      ExpireTokenJob.set(wait_until: token.expired_at).perform_now(token_id: token.id) if token
+      ExpireTokenJob.perform_at(token.expired_at, token_id: token.id) if token
 
       token
     end

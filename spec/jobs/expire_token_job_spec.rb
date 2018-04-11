@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe ExpireTokenJob, type: :job do
-  subject { described_class.perform_now(token_id: token.id) }
+  before { Sidekiq::Testing.inline! }
+
+  subject { described_class.perform_at(token.expired_at, token_id: token.id) }
 
   let!(:token) { create(:token) }
 
