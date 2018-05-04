@@ -4,11 +4,13 @@ describe V1::Padlock::Verification::Create do
   subject { described_class.call(params) }
 
   let(:params) { { user: user } }
-  let(:user)   { create(:user) }
+  let(:user)   { create(:user, :email) }
 
   context 'email' do
     it 'calls Token Generator' do
-      expect(::Padlock::TokenGenerator).to receive(:call)
+      expect(::Padlock::TokenGenerator)
+        .to receive(:call)
+        .and_return(create(:token))
 
       subject
     end

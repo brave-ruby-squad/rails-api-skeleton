@@ -1,15 +1,15 @@
 module V1
   module Padlock
-    module Verification
+    module Restoration
       class Create < ::Callable
-        delegate :verification_email, to: V1::Padlock::VerificationMailer
+        delegate :restoration_email, to: V1::Padlock::RestorationMailer
 
         def initialize(params = {})
           @user = params[:user]
         end
 
         def call
-          return if user&.new_record? || user&.verified_at
+          return if user&.new_record?
 
           send_email
         end
@@ -21,12 +21,12 @@ module V1
         def token
           @token ||= ::Padlock::TokenGenerator.call(
             user_id:  user.id,
-            key_type: :verification
+            key_type: :restoration
           )
         end
 
         def send_email
-          verification_email(user_id: user.id, token_key: token.key).deliver
+          restoration_email(user_id: user.id, token_key: token.key).deliver
         end
       end
     end

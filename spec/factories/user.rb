@@ -21,6 +21,10 @@ FactoryBot.define do
       after(:create) { |user| user.tokens << create(:token, :verification) }
     end
 
+    trait :restoration_token do
+      after(:create) { |user| user.tokens << create(:token, :restoration) }
+    end
+
     trait :verified do
       verified_at { Faker::Time.between(1.month.ago, Date.today) }
     end

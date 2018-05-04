@@ -1,0 +1,7 @@
+<div>
+  <p><%= t('padlock.emails.restoration_email.instruction') %></p>
+  <p>
+    <%= link_to t('padlock.emails.restoration_email.link_name'), verification_url(token: @token_key) %>
+  </p>
+  <p><%= t('padlock.emails.restoration_email.warning') %></p>
+</div>

@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       specify :registration
       specify :session
       specify :verification
+      specify :restoration
     end
   end
 

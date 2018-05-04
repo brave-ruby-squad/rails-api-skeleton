@@ -9,5 +9,9 @@ FactoryBot.define do
     trait :verification do
       key_type :verification
     end
+
+    trait :restoration do
+      key_type :restoration
+    end
   end
 end

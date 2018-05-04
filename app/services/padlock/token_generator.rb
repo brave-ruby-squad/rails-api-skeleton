@@ -27,7 +27,7 @@ module Padlock
       @expired_at ||= case key_type
                       when :auth
                         Time.zone.now + 1.month
-                      when :verification
+                      else
                         Time.zone.now + 1.hour
                       end
     end

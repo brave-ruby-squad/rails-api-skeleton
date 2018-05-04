@@ -1,14 +1,14 @@
 require 'rails_helper'
 
-describe V1::Padlock::VerificationMailer, type: :mailer do
-  let(:mail)   { described_class.verification_email(params) }
+describe V1::Padlock::RestorationMailer, type: :mailer do
+  let(:mail)   { described_class.restoration_email(params) }
   let(:params) { { user_id: user.id, token_key: token.key } }
+  let(:user)   { create(:user, :email, :restoration_token) }
   let(:token)  { user.tokens.first }
-  let(:user)   { create(:user, :email, :verification_token) }
 
   context 'whith token' do
     it 'renders the subject' do
-      expect(mail.subject).to eq('Verify your email address')
+      expect(mail.subject).to eq('Restore your password')
     end
 
     it 'renders the receiver email' do
@@ -16,11 +16,11 @@ describe V1::Padlock::VerificationMailer, type: :mailer do
     end
 
     it 'renders the body with token' do
-      expect(mail.body.encoded).to match('Verify my email')
+      expect(mail.body.encoded).to match('Restore my password')
     end
 
     it 'contains verification URL' do
-      expect { verification_url }.not_to raise_error
+      expect { restoration_url }.not_to raise_error
     end
   end
 
