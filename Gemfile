@@ -4,6 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.5.0'
 
 # === CORE ===
+gem 'bcrypt'
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'mysql2',   '>= 0.3.18', '< 0.5'
 gem 'puma',     '~> 3.11'
@@ -14,6 +15,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'draper'
 gem 'kaminari'
 gem 'pundit'
+gem 'sidekiq'
 
 # === API ===
 gem 'jbuilder'
