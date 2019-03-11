@@ -1,7 +1,5 @@
 require_relative 'boot'
 
-require_relative 'router'
-
 require 'rails'
 require 'active_model/railtie'
 require 'active_job/railtie'

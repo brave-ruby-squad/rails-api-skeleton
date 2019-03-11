@@ -1,7 +1,3 @@
-module Routes
-  module Articles
-    def call
-      resources :articles, only: %i[show]
-    end
-  end
+Rails.application.routes.draw do
+  resources :articles, only: %i[show]
 end

@@ -8,6 +8,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'mysql2',   '>= 0.3.18', '< 0.5'
 gem 'puma',     '~> 3.11'
 gem 'rails',    '~> 5.1.5'
+gem 'rails-routes'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # === FEATURES ===
